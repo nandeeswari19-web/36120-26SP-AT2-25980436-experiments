@@ -1,5 +1,9 @@
 # Weather Intelligence API
 
+**Student:** Nandeeswari Kumaravelu
+**Student ID:** 25980436
+**Course:** 36120 — Advanced Machine Learning Application (AT2)
+
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
