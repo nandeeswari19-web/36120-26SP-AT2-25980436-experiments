@@ -4,6 +4,65 @@
 **Student ID:** 25980436
 **Course:** 36120 — Advanced Machine Learning Application (AT2)
 
+## Setup and reproduction
+
+**Requirements:** Python 3.12, git, internet access (Open-Meteo API and TestPyPI).
+
+### 1. Create the environment
+
+```bash
+git clone <this-repo-url>
+cd 36120-26SP-AT2-25980436-experiments
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install pandas numpy matplotlib scikit-learn xgboost requests joblib ipykernel jupyter
+```
+
+### 2. Install the custom package from TestPyPI
+
+The notebooks import `nba_draft_features` (version 0.3.0, extended from AT1 with
+`aggregation.py` and `targets.py`). `--no-deps` is used because the dependencies were
+installed from the real PyPI in step 1.
+
+```bash
+python -m pip install --no-deps -i https://test.pypi.org/simple/ nba-draft-features==0.3.0
+```
+
+### 3. Register the Jupyter kernel
+
+```bash
+python -m ipykernel install --user --name=at2-venv312 --display-name="AT2 (Python 3.12)"
+```
+
+In VS Code or JupyterLab, select the kernel **AT2 (Python 3.12)** when opening a notebook.
+
+### 4. Run order
+
+1. `python fetch_weather.py` pulls hourly Sydney data (2015-2025) from the Open-Meteo
+   Historical Weather API, aggregates it to daily values and computes CCI and WHC.
+   Outputs go to `data/raw/` and `data/processed/`. The processed files are already
+   committed, so this step is optional.
+2. Run all cells in `notebooks/comfort_climate/36120-26SP-AT2-25980436-comfort_climate.ipynb`.
+3. Run all cells in `notebooks/weather_hazard/36120-26SP-AT2-25980436-weather_hazard.ipynb`.
+   Each notebook saves its trained model to `models/<target>/` and its metrics to a
+   `*_metrics.json` file (final cell).
+4. `python export_for_api.py` writes the feature lookup tables used by the API to
+   `models/comfort_climate/` and `models/weather_hazard/`.
+
+### 5. Deployment
+
+The trained models are served by a separate FastAPI repository:
+https://github.com/nandeeswari19-web/36120-26SP-AT2-25980436-api
+
+Deployed API (Render): `<paste your Render URL here>`
+
+### Data and leakage notes
+
+Only data before 2026 is used for training, validation and testing. The train,
+validation and test sets are split chronologically (70/15/15) to avoid leaking future
+information through the lag and rolling features.
+
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
