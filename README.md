@@ -55,7 +55,7 @@ In VS Code or JupyterLab, select the kernel **AT2 (Python 3.12)** when opening a
 The trained models are served by a separate FastAPI repository:
 https://github.com/nandeeswari19-web/36120-26SP-AT2-25980436-api
 
-Deployed API (Render): `<paste your Render URL here>`
+Deployed API (Render): `https://three6120-26sp-at2-25980436-api.onrender.com`
 
 ### Data and leakage notes
 
